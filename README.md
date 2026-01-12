@@ -62,3 +62,15 @@ LLM Inference
 
 Final Answer  
 
+## 🛠️ Tech Stack
+
+- Python
+- FastAPI
+- LangChain
+- FAISS
+- HuggingFace Embeddings
+- OCR (Tesseract / Unstructured)
+- Speech-to-Text
+- LLM (Groq / OpenAI compatible)
+
+
