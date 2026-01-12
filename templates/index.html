@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Q&A</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg-light: #f4f7f6;
+            --color-primary: #34495e;
+            --color-secondary: #2c3e50;
+            --color-accent-blue: #3498db;
+            --color-accent-green: #2ecc71;
+            --color-shadow: rgba(0, 0, 0, 0.1);
+            --color-border: #bdc3c7;
+            --color-text-light: #ecf0f1;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--color-bg-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            color: var(--color-primary);
+        }
+
+        header {
+            width: 100%;
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px var(--color-shadow);
+            text-transform: uppercase;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            width: 100%;
+        }
+
+        .submit_forms {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px var(--color-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .submit_forms:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .upload_label, .question_label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #ecf0f1;
+            transition: background-color 0.3s ease;
+            text-align: left;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #dfe6e9;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-accent-blue);
+        }
+
+        button {
+            width: 100%;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #upload_data {
+            background-color: var(--color-accent-blue);
+        }
+        
+        #answer {
+            background-color: var(--color-accent-green);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--color-shadow);
+        }
+
+        #content-area {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 700px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--color-shadow);
+            min-height: 100px;
+            display: none;  /* HIDDEN by default */
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        #content-area p {
+            margin: 0;
+            font-weight: 400;
+            color: var(--color-secondary);
+        }
+
+        @media (max-width: 600px) {
+            header {
+                font-size: 1.8rem;
+                padding: 20px;
+            }
+            .submit_forms {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+         RAG Q & A
+    </header>
+
+    <div class="container">
+        <div class="submit_forms">
+            <div class="form-group">
+                <label for="file_input" class="upload_label">Upload File(Image,pdf,Audio etc)</label>
+                <input id="file_input" type="file">
+                <label for="file_input" class="custom-file-upload">
+                    <span id="file_name">No file selected</span>
+                </label>
+            </div>
+            <button id="upload_data" type="button">
+                 Submit File
+            </button>
+        </div>
+
+        <div class="submit_forms" style="margin-top: 20px;">
+            <div class="form-group">
+                <label for="question" class="question_label"> Enter your question</label>
+                <input type="text" id="question" placeholder="e.g., What is RAG?">
+            </div>
+            <button type="button" id="answer" disabled>
+                 Get Answer
+            </button>
+        </div>
+        
+        <div id="content-area">
+            <p></p>
+        </div>
+    </div>
+</body>
+
+<script>
+    const data = document.getElementById("upload_data");
+    const fileInput = document.getElementById("file_input");
+    const fileNameSpan = document.getElementById("file_name");
+    const contentDiv = document.getElementById("content-area");
+    const answerBtn = document.getElementById("answer");
+    const questionInput = document.getElementById("question");
+
+    // Display file name when selected
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileNameSpan.textContent = fileInput.files[0].name;
+        } else {
+            fileNameSpan.textContent = "No file selected";
+        }
+    });
+
+    // Handle file upload
+    data.addEventListener('click', function() {
+        const file = fileInput.files[0];
+        if (!file) {
+            alert("Please select a file to submit.");
+            return;
+        }
+        contentDiv.style.display = "flex";
+        contentDiv.innerHTML = '<p>Processing... Please wait.</p>';
+        const formData = new FormData();
+        formData.append('file', file);
+        fetch("http://127.0.0.1:8000/file_submit/", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`${response.status}`);
+            }
+            return response.json();
+        })
+        .then(result => {
+            contentDiv.style.display = "none"; // Hide again after processing
+            answerBtn.disabled = false; // Enable question button
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            contentDiv.style.display = "flex";
+            contentDiv.innerHTML = '<p>Error processing file.</p>';
+        });
+    });
+
+    // Handle question submission
+    answerBtn.addEventListener('click', function() {
+        const question = questionInput.value;
+        if (!question.trim()) {
+            alert("Please enter a question.");
+            return;
+        }
+        contentDiv.style.display = "flex";
+        contentDiv.innerHTML = '<p>Searching for answer... Please wait.</p>';
+        answerBtn.disabled = true; // prevent multiple clicks
+
+        fetch("http://127.0.0.1:8000/get_answer/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "question": question })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`${response.status}`);
+            }
+            return response.json();
+        })
+        .then(result => {
+            contentDiv.style.display = "flex";
+            contentDiv.innerHTML = `<p>${result.res}</p>`;
+            answerBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            contentDiv.style.display = "flex";
+            contentDiv.innerHTML = '<p>An error occurred. Please check the console.</p>';
+            answerBtn.disabled = false;
+        });
+    });
+</script>
+</html>
