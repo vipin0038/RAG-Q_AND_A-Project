@@ -26,22 +26,39 @@ The system combines **document parsing, embeddings, vector search, and LLM reaso
 ## 🧠 Architecture Overview
 
 User Uploads File  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 File Type Detection  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
-Content Extraction (PDF / Image/ Audio / Text)  
+
+Content Extraction (PDF / Image/ Audio / Text) 
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 Chunking & Preprocessing  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 Embedding Generation  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 Vector Store (FAISS)  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 Retriever  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 RAG Prompt Construction  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 LLM Inference  
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 
+
 Final Answer  
 
